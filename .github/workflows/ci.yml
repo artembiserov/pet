@@ -20,7 +20,7 @@ jobs:
 
       - name: Get list of updated dirs
         id: changed-dir-names
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v46
         with:
           files_yaml: |
             app:
