@@ -36,7 +36,7 @@ jobs:
     timeout-minutes: 1
     needs: diff
     if: needs.diff.outputs.changed-client-dir == 'true'
-    runs-on: nscloud-ubuntu-22.04-amd64-2x4
+    runs-on: ubuntu-latest
     steps:
       - name: Puts output
         run: |
@@ -47,7 +47,7 @@ jobs:
     timeout-minutes: 1
     needs: diff
     if: needs.diff.outputs.changed-other-dir == 'true'
-    runs-on: nscloud-ubuntu-22.04-amd64-2x4
+    runs-on: ubuntu-latest
     steps:
       - name: Puts output
         run: |
@@ -58,7 +58,7 @@ jobs:
     timeout-minutes: 1
     needs: diff
     if: needs.diff.outputs.changed-app-dir == 'true'
-    runs-on: nscloud-ubuntu-22.04-amd64-2x4
+    runs-on: ubuntu-latest
     steps:
       - name: Puts output
         run: |
