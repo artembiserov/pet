@@ -38,8 +38,6 @@ jobs:
     if: needs.diff.outputs.changed-client-dir == 'true'
     runs-on: nscloud-ubuntu-22.04-amd64-2x4
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
       - name: Puts output
         run: |
           echo "Output on change client dir"
@@ -51,8 +49,6 @@ jobs:
     if: needs.diff.outputs.changed-other-dir == 'true'
     runs-on: nscloud-ubuntu-22.04-amd64-2x4
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
       - name: Puts output
         run: |
           echo "Output on change other dir"
@@ -64,8 +60,6 @@ jobs:
     if: needs.diff.outputs.changed-app-dir == 'true'
     runs-on: nscloud-ubuntu-22.04-amd64-2x4
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
       - name: Puts output
         run: |
           echo "Output on change app dir"
