@@ -6,85 +6,66 @@ on:
     branches: [ main ]
 
 jobs:
-  scan_ruby:
+  diff:
+    name: Get changes
+    timeout-minutes: 5
     runs-on: ubuntu-latest
-
+    outputs:
+      changed-app-dir: ${{steps.changed-dir-names.outputs.app_any_changed}}
+      changed-client-dir: ${{ steps.changed-dir-names.outputs.client_any_changed }}
+      changed-other-dir: ${{ steps.changed-dir-names.outputs.other_any_changed }}
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Get list of updated dirs
+        id: changed-dir-names
+        uses: tj-actions/changed-files@v45
         with:
-          ruby-version: .ruby-version
-          bundler-cache: true
+          files_yaml: |
+            app:
+              - 'app/**'
+            client:
+              - 'client/**'
+            other:
+              - '!client/**'
+              - '!app/**'
 
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
-
-  scan_js:
-    runs-on: ubuntu-latest
-
+  changed-client-dir:
+    name: 'Run on change client dir'
+    timeout-minutes: 1
+    needs: diff
+    if: needs.diff.outputs.changed-client-dir == 'true'
+    runs-on: nscloud-ubuntu-22.04-amd64-2x4
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v4
+      - name: Puts output
+        run: |
+          echo "Output on change client dir"
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Scan for security vulnerabilities in JavaScript dependencies
-        run: bin/importmap audit
-
-  lint:
-    runs-on: ubuntu-latest
+  changed-other-dir:
+    name: 'Run on change other dir'
+    timeout-minutes: 1
+    needs: diff
+    if: needs.diff.outputs.changed-other-dir == 'true'
+    runs-on: nscloud-ubuntu-22.04-amd64-2x4
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v4
+      - name: Puts output
+        run: |
+          echo "Output on change other dir"
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Lint code for consistent style
-        run: bin/rubocop -f github
-
-  test:
-    runs-on: ubuntu-latest
-
-    # services:
-    #  redis:
-    #    image: redis
-    #    ports:
-    #      - 6379:6379
-    #    options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+  changed-app-dir:
+    name: 'Run on change app dir'
+    timeout-minutes: 1
+    needs: diff
+    if: needs.diff.outputs.changed-app-dir == 'true'
+    runs-on: nscloud-ubuntu-22.04-amd64-2x4
     steps:
-      - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config google-chrome-stable
-
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: .ruby-version
-          bundler-cache: true
-
-      - name: Run tests
-        env:
-          RAILS_ENV: test
-          # REDIS_URL: redis://localhost:6379/0
-        run: bin/rails db:test:prepare test test:system
-
-      - name: Keep screenshots from failed system tests
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: screenshots
-          path: ${{ github.workspace }}/tmp/screenshots
-          if-no-files-found: ignore
+      - name: Puts output
+        run: |
+          echo "Output on change app dir"
