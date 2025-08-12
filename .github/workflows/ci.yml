@@ -16,7 +16,7 @@ jobs:
       changed-other-dir: ${{ steps.changed-dir-names.outputs.other_any_changed }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Get list of updated dirs
         id: changed-dir-names
