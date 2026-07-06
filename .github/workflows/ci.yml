@@ -73,3 +73,4 @@ jobs:
       - uses: stoplightio/spectral-action@latest
         with:
           file_glob: 'test.yaml'
+          spectral_ruleset: './.spectral.yaml'
