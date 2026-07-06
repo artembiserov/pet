@@ -1,0 +1,40 @@
+openapi: 3.0.3
+info:
+  title: Test Sample API
+  version: 1.0.0
+paths:
+  /users:
+    get:
+      summary: Retrieve users
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+    post:
+      summary: Create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Created
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+

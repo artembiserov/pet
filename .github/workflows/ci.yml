@@ -63,3 +63,13 @@ jobs:
       - name: Puts output
         run: |
           echo "Output on change app dir"
+
+  run-spectral:
+    name: 'Run spectral'
+    needs: diff
+    runs-on: ubuntu-latest
+    steps:
+      # Run Spectral
+      - uses: stoplightio/spectral-action@latest
+        with:
+          file_glob: 'test.yaml'
