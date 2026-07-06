@@ -29,7 +29,7 @@ paths:
 components:
   schemas:
     User:
-      type: object
+      type: objec
       required:
         - name
       properties:
