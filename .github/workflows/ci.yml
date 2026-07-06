@@ -69,8 +69,10 @@ jobs:
     needs: diff
     runs-on: ubuntu-latest
     steps:
-      # Run Spectral
-      - uses: stoplightio/spectral-action@latest
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Run Spectral
+        uses: stoplightio/spectral-action@latest
         with:
           file_glob: 'test.yaml'
           spectral_ruleset: './.spectral.yaml'
