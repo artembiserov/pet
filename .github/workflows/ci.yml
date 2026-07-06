@@ -72,7 +72,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
       - name: Run Spectral
-        uses: stoplightio/spectral-action@latest
+        uses: stoplightio/spectral-action@v0.8
         with:
           file_glob: 'test.yaml'
           spectral_ruleset: './.spectral.yaml'
